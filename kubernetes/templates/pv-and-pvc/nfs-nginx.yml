@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nfs-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      app: nfs-nginx
+  template:
+    metadata:
+      labels:
+        app: nfs-nginx
+    spec:
+      containers:
+      - name: nfs-nginx
+        image: nginx
+        ports:
+          - name: web
+            containerPort: 80
+        volumeMounts:
+          - name: nfs
+            mountPath: /usr/share/nginx/html
+      volumes:
+      - name: nfs
+        persistentVolumeClaim:
+          claimName: nfs

@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: civo-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels: 
+      app: civo-nginx
+  template:
+    metadata:
+      labels:
+        app: civo-nginx
+    spec:
+      containers:
+      - name: civo-nginx
+        image: nginx
+        ports:
+          - name: web
+            containerPort: 80
+        volumeMounts:
+          - name: civo
+            mountPath: /usr/share/nginx/html
+      volumes:
+      - name: civo
+        persistentVolumeClaim:
+          claimName: civo
